@@ -13,6 +13,10 @@ func Routes() http.Handler {
 
     r.Use(middleware.Logger)
 
+    // Route for static data under /static
+    fserver := http.FileServer(http.Dir("assets/static"))
+    r.Handle("/static/*", http.StripPrefix("/static/", fserver))
+
     r.Get("/", func(w http.ResponseWriter, r *http.Request){
         w.Write([]byte("No fotos here ..."))
     })
