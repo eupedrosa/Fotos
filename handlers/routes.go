@@ -17,9 +17,7 @@ func Routes() http.Handler {
     fserver := http.FileServer(http.Dir("assets/static"))
     r.Handle("/static/*", http.StripPrefix("/static/", fserver))
 
-    r.Get("/", func(w http.ResponseWriter, r *http.Request){
-        w.Write([]byte("No fotos here ..."))
-    })
+    r.Route("/", IndexRoutes)
 
     return r
 }

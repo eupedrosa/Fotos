@@ -11,6 +11,7 @@ import (
     "time"
 
     . "github.com/eupedrosa/Fotos/handlers"
+    . "github.com/eupedrosa/Fotos/pkg/tmpl"
 )
 
 const (
@@ -24,6 +25,12 @@ var version = fmt.Sprintf("%d.%d.%d %s", major, minor, revision, codename)
 
 func main() {
     fmt.Printf("Fotos WebApp ... v%s\n", version)
+
+    err := LoadTemplates("assets/html")
+    if err != nil {
+        slog.Error("failed to load templates", "error", err)
+        os.Exit(1)
+    }
 
     // :: Create an HTTP server with graceful shutdown ::
 
@@ -57,7 +64,7 @@ func main() {
     }()
 
     slog.Info("listening at :4646")
-    err := server.ListenAndServe()
+    err = server.ListenAndServe()
     if err != nil && err != http.ErrServerClosed {
         slog.Error("HTTP server failed to start", "error", err)
         return
